@@ -1,51 +1,42 @@
 #include<stdio.h>
-void main()
-   {
-    int Processes[5];
-    
-    struct memory{    //Memory available
-       int size;
-       int flag;
-     }m[5];
-     
-    printf("Enter the memory used by the processes\n");
-    for (int i=0;i<5;i++)
-        scanf("%d",&Processes[i]);
-        
-    printf("Enter the size of memory slots available :\n");
-    for (int i=0;i<5;i++)
-       {
-        scanf("%d",&m[i].size);
-        m[i].flag=0;
+void main(){
+int memblok,limit,i,j;
+printf("Enter the number of memory blocks and no of process\n");
+scanf("%d%d",&memblok,&limit);
+struct memory{
+int size,alloc;
+}m[memblok];
+struct process{
+int psize,flag;
+}p[limit];
+printf("Enter the size of memory block\n");
+for(i=0;i<memblok;i++){
+scanf("%d",&m[i].size);
+m[i].alloc=0;
+}
+printf("Enter the size of  processes\n");
+for(i=0;i<limit;i++){
+scanf("%d",&p[i].psize);
+p[i].flag=0;
+}
+for(i=0;i<limit;i++){
+ for(j=0;j<memblok;j++){
+  if(p[i].flag==0){
+   if(p[i].psize<=m[j].size){
+      if(m[j].alloc==1)
+        continue;
+      else{
+        m[j].alloc=1;
+        p[i].flag=1;
+        printf("process %d is allocated in %d block\n",p[i].psize,m[j].size);
+        }
        }
-       
-    //Allocation
-    for (int i=0;i<5;i++)
-       {
-        for (int j=0;j<5;j++)
-           {
-            if(Processes[i]<=m[j].size)
-               {
-                //----------------------------
-                if (m[j].flag==1)
-                   continue;
-                else
-                   {
-                    printf("Processes %d is allocated to %d Memory\n",i+1,m[j].size);
-                    m[j].flag=1;
-                    break;
-                   }
-               }
-          
-               
-           }
-       }   
+     }
    }
- 
- 
- 
- 
- 
- 
- 
- 
+  }
+for(i=0;i<limit;i++){
+  if(p[i].flag==0)
+   printf("There is no space for %d process\n",p[i].psize);
+}
+}
+     
